@@ -1,9 +1,0 @@
-fastapi
-starlette
-uvicorn[standard]
-python-dotenv
-pydantic
-langchain-google-genai
-langgraph
-motor
-google-generativeai
