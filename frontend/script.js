@@ -8,11 +8,21 @@ const API_URL = 'http://127.0.0.1:8000/chat';
 // guardando o ID do chat atual
 let chatId = null;
 
+// converter formatações markdown simples para HTML
+function markdownToHtml(text) {
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\* /g, '<br>&bull; ');
+    return html;
+}
+
 // Função para adicionar mensagens ao chat
 function addMessage(message, sender) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message', sender === 'user' ? 'user-message' : 'agent-message');
-    messageElement.textContent = message;
+
+    const htmlMessage = markdownToHtml(message);
+    messageElement.innerHTML = htmlMessage;
+
     chatBox.appendChild(messageElement);
 
     // Rolando para a última mensagem
@@ -21,11 +31,11 @@ function addMessage(message, sender) {
 
 // Função para enviar mensagem ao backend
 async function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
+    const userMessage = userInput.value.trim();
+    if (!userMessage) return;
 
     // Adicionando a mensagem do usuário ao chat
-    addMessage(message, 'user');
+    addMessage(userMessage, 'user');
     userInput.value = '';
 
     try {
